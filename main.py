@@ -15,7 +15,7 @@ url = "https://github.com/NurSyahira02/SV_IndividualAssignment/blob/main/hh_inco
 
 # Load Dataset
 try:
-    arts_df = pd.read_csv(url)
+    df_income = pd.read_csv('hh_income_state_CLEANED.csv')
     st.success("Data loaded successfully!")
     df_income['date'] = pd.to_datetime(df_income['date'])
     df_income['year'] = df_income['date'].dt.year
