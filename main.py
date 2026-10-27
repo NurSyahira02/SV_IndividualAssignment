@@ -4,7 +4,7 @@ import plotly.express as px
 
 # Page Setup
 st.set_page_config(
-    page_title="Page 1: Household Income Trends",
+    page_title="Household Income Trends",
     layout="wide"
 )
 
@@ -15,7 +15,8 @@ url = "https://github.com/NurSyahira02/SV_IndividualAssignment/blob/main/hh_inco
 
 # Load Dataset
 try:
-    df_income = pd.read_csv('hh_income_state_CLEANED.csv')
+    arts_df = pd.read_csv(url)
+    st.success("Data loaded successfully!")
     df_income['date'] = pd.to_datetime(df_income['date'])
     df_income['year'] = df_income['date'].dt.year
 
