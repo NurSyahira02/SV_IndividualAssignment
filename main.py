@@ -8,12 +8,10 @@ st.set_page_config(
     layout="wide"
 )
 
-st.header("Objective 1: Household Income Growth & Disparity Analysis 📈", divider="gray")
+st.header("Household Income Growth & Disparity Analysis 📈", divider="gray")
 
-# Objective Statement
-st.markdown("""
-**Objective Statement:** To evaluate household economic growth and distribution disparity across Malaysian states by comparing mean and median household incomes over time (2019–2024).
-""")
+# URL for the dataset
+url = "https://github.com/NurSyahira02/SV_IndividualAssignment/blob/main/hh_income_state_CLEANED.csv"
 
 # Load Dataset
 try:
