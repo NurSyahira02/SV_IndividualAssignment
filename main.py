@@ -4,21 +4,18 @@ import plotly.express as px
 
 # Page Setup
 st.set_page_config(
-    page_title="Household Income Trends",
+    page_title="Household Income Analysis",
     layout="wide"
 )
 
-st.header("Household Income Growth & Disparity Analysis 📈", divider="gray")
-
-# URL for the dataset
-url = "https://github.com/NurSyahira02/SV_IndividualAssignment/blob/main/hh_income_state_CLEANED.csv"
+st.header("Household Income Growth & Disparity Analysis 📊", divider="gray")
 
 # Load Dataset
 try:
     df_income = pd.read_csv('hh_income_state_CLEANED.csv')
     st.success("Data loaded successfully!")
     df_income['date'] = pd.to_datetime(df_income['date'])
-    df_income['year'] = df_income['date'].dt.year
+    df_income['year'] = df_income['date'].dt.year.astype(str)
 
     # State Selector Dropdown
     selected_state = st.selectbox("Select State / Federal Territory:", sorted(df_income['state'].unique()), index=11)
@@ -26,8 +23,8 @@ try:
     state_inc = df_income[df_income['state'] == selected_state].sort_values('year')
 
     # Summary Metrics Calculation
-    latest_inc = state_inc[state_inc['year'] == 2024].iloc[0]
-    earliest_inc = state_inc[state_inc['year'] == 2019].iloc[0]
+    latest_inc = state_inc[state_inc['year'] == '2024'].iloc[0]
+    earliest_inc = state_inc[state_inc['year'] == '2019'].iloc[0]
     
     mean_growth = ((latest_inc['income_mean'] - earliest_inc['income_mean']) / earliest_inc['income_mean']) * 100
     gap_2024 = latest_inc['income_mean'] - latest_inc['income_median']
@@ -43,8 +40,8 @@ try:
     st.subheader("Raw Data Preview")
     st.dataframe(state_inc[['state', 'year', 'income_mean', 'income_median']])
 
-    # Dual Line Trend Plot
-    st.subheader(f"Mean vs. Median Income Trend for {selected_state}")
+    # Grouped Bar Chart Visualization
+    st.subheader(f"Mean vs. Median Income Comparison for {selected_state}")
     
     df_melted = state_inc.melt(
         id_vars=['year'], 
@@ -54,27 +51,32 @@ try:
     )
     df_melted['Metric'] = df_melted['Metric'].map({'income_mean': 'Mean Income', 'income_median': 'Median Income'})
 
-    fig1 = px.line(
+    fig1 = px.bar(
         df_melted,
         x='year',
         y='Income (RM)',
         color='Metric',
-        markers=True,
-        title=f'Household Income Trajectory in {selected_state} (2019 - 2024)',
+        barmode='group',
+        text_auto=',.0f',
+        title=f'Household Income Disparity in {selected_state} (2019 - 2024)',
         labels={'year': 'Year', 'Income (RM)': 'Income (RM)'},
         color_discrete_sequence=['#1f77b4', '#ff7f0e']
     )
-    fig1.update_xaxes(type='category')
-    fig1.update_layout(hovermode='x unified')
+    fig1.update_traces(textposition='outside')
+    fig1.update_layout(
+        hovermode='x unified',
+        height=480,
+        legend_title_text='Income Metric'
+    )
 
     st.plotly_chart(fig1, use_container_width=True)
 
     # Interpretation Section
     st.markdown("### 💬 Interpretation & Discussion")
     st.info(f"""
-    * **Observed Trend:** In **{selected_state}**, both mean and median household incomes demonstrate an overall upward trajectory from 2019 to 2024.
-    * **Income Skewness:** The mean income consistently remains above the median income throughout the period. This positive skew indicates that high-income earners raise the arithmetic average.
-    * **Socioeconomic Insight:** The persistent gap between mean and median figures highlights structural income disparity within the region, showing that median income provides a truer representation of typical household welfare.
+    * **Observed Growth:** In **{selected_state}**, both mean and median household income bars demonstrate steady expansion between 2019 and 2024.
+    * **Distribution Gap:** Side-by-side bar comparisons highlight that mean income consistently exceeds median income across every recorded year.
+    * **Socioeconomic Meaning:** The height difference between the mean and median bars visually underscores income inequality, as high-earning households inflate the overall average income.
     """)
 
 except Exception as e:
