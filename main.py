@@ -31,10 +31,10 @@ try:
 
    # 4 Summary Boxes
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Mean Income", f"RM {latest_inc['income_mean']:,}", help="Average household income in 2024 (compared across 2019–2024 baseline)", border=True)
-    col2.metric("Median Income", f"RM {latest_inc['income_median']:,}", help="Median household income in 2024 (50th percentile baseline)", border=True)
-    col3.metric("5-Year Growth", f"{mean_growth:.1f}%", help="Percentage increase in mean income from 2019 to 2024", border=True)
-    col4.metric("Mean-Median Gap", f"RM {gap_2024:,}", help="Difference between mean and median income in 2024 (indicates income disparity)", border=True)
+    col1.metric("Mean Income", f"RM {latest_inc['income_mean']:,}", help="Latest mean household income across the 2019–2024 evaluation period", border=True)
+    col2.metric("Median Income", f"RM {latest_inc['income_median']:,}", help="Latest median household income across the 2019–2024 evaluation period", border=True)
+    col3.metric("5-Year Growth", f"{mean_growth:.1f}%", help="Percentage growth in mean income over the 5-year period (2019 to 2024)", border=True)
+    col4.metric("Mean-Median Gap", f"RM {gap_2024:,}", help="Income distribution disparity gap between mean and median income over the 2019–2024 window", border=True)
 
     # Raw Data Preview
     st.subheader("Raw Data Preview")
